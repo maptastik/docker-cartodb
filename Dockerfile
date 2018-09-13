@@ -140,7 +140,7 @@ RUN sed -i 's/\(peer\|md5\)/trust/' /etc/postgresql/10/main/pg_hba.conf && \
 
 # Crankshaft: CARTO Spatial Analysis extension for PostgreSQL
 RUN cd / && \
-    curl https://bootstrap.pypa.io/get-pip.py | python && \
+    curl https://gist.githubusercontent.com/maptastik/a47f0de623c5945409abd21f23857ce2/raw/f54075ac27d5f82fef907bfca7f1b66b66e0c8a2/get-pip.py | python && \
     git clone https://github.com/CartoDB/crankshaft.git && \
     cd /crankshaft && \
     git checkout $CRANKSHAFT_VERSION && \
@@ -152,8 +152,7 @@ RUN cd / && \
 
 # Initialize template postgis db
 ADD ./template_postgis.sh /tmp/template_postgis.sh
-RUN service postgresql start && /bin/su postgres -c \
-      /tmp/template_postgis.sh && service postgresql stop
+RUN service postgresql start && /bin/su postgres -c /tmp/template_postgis.sh && service postgresql stop
 
 ADD ./cartodb_pgsql.sh /tmp/cartodb_pgsql.sh
 
